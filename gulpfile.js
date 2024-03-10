@@ -88,10 +88,10 @@ function building() {
   return src([
     'app/css/style.min.css',
     'app/images/**/*.*',
-    // '!app/images/*.svg',
-    // '!app/images/**/*.html',
-    // 'app/images/sprite.svg',
-    // 'app/fonts/*.*',
+    '!app/images/*.svg',
+    '!app/images/**/*.html',
+    'app/images/sprite.svg',
+    'app/fonts/*.*',
     'app/js/*.js',
     'app/**/*.html'
   ], { base: 'app' })
