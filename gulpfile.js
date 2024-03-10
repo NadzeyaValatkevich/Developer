@@ -17,22 +17,23 @@ const ttf2woff2 = require('gulp-ttf2woff2');
 const include = require('gulp-include');
 const deploy = require('gulp-gh-pages');
 const sourcemaps = require('gulp-sourcemaps');
+const ghPages = require('gh-pages');
 
-// function images() {
-//   return src(['app/images/**/*.{png,jpg}', '!app/images/icons/*.svg'])
-//     .pipe(newer('app/images'))
-//     .pipe(avif({ quality: 50 }))
+function images() {
+  return src(['app/images/**/*.{png,jpg}', '!app/images/icons/*.svg'])
+    .pipe(newer('app/images'))
+    .pipe(avif({ quality: 50 }))
 
-//     .pipe(src('app/images/**/*.{png,jpg}'))
-//     .pipe(newer('app/images'))
-//     .pipe(webp())
+    .pipe(src('app/images/**/*.{png,jpg}'))
+    .pipe(newer('app/images'))
+    .pipe(webp())
 
-//     .pipe(src('app/images/**/*.{png,jpg}'))
-//     .pipe(newer('app/images'))
-//     .pipe(imagemin())
+    .pipe(src('app/images/**/*.{png,jpg}'))
+    .pipe(newer('app/images'))
+    .pipe(imagemin())
 
-//     .pipe(dest('app/images'))
-// }
+    .pipe(dest('app/images'))
+}
 
 function sprite() {
   return gulp.src('app/images/icons/*.svg')
@@ -97,9 +98,13 @@ function building() {
     .pipe(dest('dist'))
 }
 
-function deployToGitHubPages() {
-  return src('./dist/**/*')
-    .pipe(deploy());
+function deployToGitHubPages(cb) {
+  ghPages.publish('dist', {
+    branch: 'gh-pages',
+    repo: 'https://github.com/NadzeyaValatkevich/Developer',
+  }, cb);
+  // return src('./dist/**/*')
+  //   .pipe(deploy());
 }
 
 exports.scripts = scripts;
@@ -107,9 +112,11 @@ exports.styles = styles;
 exports.sprite = sprite;
 exports.watching = watching;
 exports.building = building;
+exports.images = images;
 
 
-exports.deploy = deployToGitHubPages;
+
+exports.deploy = series(deployToGitHubPages);
 exports.build = series(cleanDist, building);
 exports.default = parallel(styles, scripts, watching);
 
