@@ -109,7 +109,7 @@ exports.watching = watching;
 exports.building = building;
 
 
-exports.deploy = series(deployToGitHubPages);
+exports.deploy = deployToGitHubPages;
 exports.build = series(cleanDist, building);
 exports.default = parallel(styles, scripts, watching);
 
